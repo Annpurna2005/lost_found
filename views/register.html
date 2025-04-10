@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | User Panel</title>
+  <style>
+    /* --- Your CSS is already excellent --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .register-container {
+      background: white;
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      animation: slideIn 1s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 10px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      outline: none;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus {
+      border-color: #6c63ff;
+    }
+
+    .form-group label {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-size: 14px;
+      color: #999;
+      pointer-events: none;
+      transition: 0.3s ease;
+      background: white;
+      padding: 0 5px;
+    }
+
+    .form-group input:focus + label,
+    .form-group input:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 8px;
+      font-size: 12px;
+      color: #6c63ff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #6c63ff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.4s ease;
+    }
+
+    .btn:hover {
+      background: #5a54d1;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      color: red;
+      display: none;
+    }
+
+    @media (max-width: 500px) {
+      .register-container {
+        margin: 20px;
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>Create Account</h2>
+    <form method="post" action="../controller/register.php" enctype="multipart/form-data" id="registerForm" onsubmit="return validateForm();">
+      <div class="form-group">
+        <input type="text" name="name" id="name" placeholder=" " required />
+        <label for="name">Full Name</label>
+      </div>
+      <div class="form-group">
+        <input type="email" name="email" id="email" placeholder=" " required />
+        <label for="email">Email</label>
+      </div>
+      <div class="form-group">
+        <input type="password" name="password" id="password" placeholder=" " required />
+        <label for="password">Password</label>
+      </div>
+      <div class="form-group">
+        <input type="text" name="phone" id="phone" placeholder=" " />
+        <label for="phone">Phone (optional)</label>
+      </div>
+      <div class="form-group">
+        <input type="file" name="profile_photo" id="photo" />
+        <label for="photo">Profile Photo</label>
+      </div>
+      <button type="submit" class="btn">Register</button>
+      <div class="message" id="msg">Please fill all required fields.</div>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+     
+
+      if (name === "" || email === "" || password === "") {
+        const msg = document.getElementById("msg");
+        msg.style.display = "block";
+        return false;
+      }
+
+      return true; // allow form to submit
+    }
+  </script>
+</body>
+</html>
