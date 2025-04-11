@@ -166,6 +166,16 @@ $postsResult = $stmt2->get_result();
         padding: 8px 18px;
       }
     }
+    .btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
   </style>
 </head>
 <body>
@@ -178,7 +188,11 @@ $postsResult = $stmt2->get_result();
     <p>📞 <?php echo htmlspecialchars($user['phone']); ?></p>
     <p>📧 <?php echo htmlspecialchars($user['email']); ?></p>
     <p><strong>Total Posts:</strong> <?php echo $postsResult->num_rows; ?></p>
-  </div>
+    <a href="https://wa.me/+91<?php echo htmlspecialchars($user['phone']); ?>" target="_blank">
+        <button class="btn">message 💬</button>
+    </a>
+</div>
+
 
   <?php if ($postsResult->num_rows > 0): ?>
     <div class="posts-container">
