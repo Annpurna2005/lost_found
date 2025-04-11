@@ -248,6 +248,7 @@ button,
       
         <div class="profile-image">
         <img src="<?php echo '../uploads/' . $profile_photo; ?>" alt="Profile Picture">
+
         </div>
         <div class="profile-info">
           <h2><?php echo $name; ?></h2>

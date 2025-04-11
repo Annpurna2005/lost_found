@@ -8,6 +8,7 @@ if (!isset($_GET['user_id'])) {
 
 $user_id = $_GET['user_id'];
 
+// Get user details
 $userQuery = "SELECT * FROM users WHERE id = ?";
 $stmt = $conn->prepare($userQuery);
 $stmt->bind_param("i", $user_id);
@@ -20,7 +21,8 @@ if (!$user) {
   exit;
 }
 
-$postsQuery = "SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC";
+// Get user's posts
+$postsQuery = "SELECT * FROM posts WHERE user_id = ? ORDER BY datetime DESC";
 $stmt2 = $conn->prepare($postsQuery);
 $stmt2->bind_param("i", $user_id);
 $stmt2->execute();
@@ -36,7 +38,6 @@ $postsResult = $stmt2->get_result();
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -82,7 +83,6 @@ $postsResult = $stmt2->get_result();
       max-width: 460px;
       width: 100%;
       margin-bottom: 35px;
-      position: relative;
     }
 
     .profile-card img {
@@ -103,21 +103,6 @@ $postsResult = $stmt2->get_result();
     .profile-card p {
       font-size: 15px;
       color: #475569;
-    }
-
-    .message-button {
-      margin-top: 18px;
-      background-color: #22c55e;
-      color: white;
-      padding: 10px 24px;
-      border-radius: 10px;
-      font-size: 15px;
-      transition: background 0.3s ease, transform 0.2s ease;
-    }
-
-    .message-button:hover {
-      background-color: #16a34a;
-      transform: scale(1.03);
     }
 
     .posts-container {
@@ -167,47 +152,53 @@ $postsResult = $stmt2->get_result();
       line-height: 1.4;
     }
 
+    .status.approved { color: green; font-weight: bold; }
+    .status.pending { color: orange; font-weight: bold; }
+    .status.rejected { color: red; font-weight: bold; }
+
     @media (max-width: 600px) {
       .profile-card, .post-card {
         border-radius: 14px;
       }
 
-      .back-button, .message-button {
+      .back-button {
         font-size: 14px;
         padding: 8px 18px;
       }
     }
   </style>
-
 </head>
 <body>
 
   <a href="home.php" class="back-button">← Back to Home</a>
+
   <div class="profile-card">
-  <img src="../controller/uploads/<?php echo $user['profile_photo']; ?>" alt="Profile Picture">
-  <h2><?php echo htmlspecialchars($user['name']); ?></h2>
-  <p>📞 <?php echo htmlspecialchars($user['phone']); ?></p>
-  <br>
- <a href="https://wa.me/91<?php echo $user['phone']; ?>?text=Hi%20<?php echo urlencode($user['name']); ?>,%20I%20found%20your%20lost%20item." target="_blank" class="message-button">💬 Message</a>
-
-
-</div>
-
-  <div class="posts-container">
-    <?php while($post = $postsResult->fetch_assoc()): ?>
-      <div class="post-card">
-        <img src="../controller/uploads/<?php echo $post['image']; ?>" alt="Post Image">
-        <div class="post-details">
-          <h4><?php echo htmlspecialchars($post['title']); ?></h4>
-          <p><strong>Type:</strong> <?php echo ucfirst($post['type']); ?></p>
-          <p><strong>Category:</strong> <?php echo $post['category']; ?></p>
-          <p><strong>Location:</strong> <?php echo $post['location']; ?></p>
-          <p><strong>Date:</strong> <?php echo date('d M Y, h:i A', strtotime($post['datetime'])); ?></p>
-          <p><strong>Status:</strong> <?php echo ucfirst($post['status']); ?></p>
-        </div>
-      </div>
-    <?php endwhile; ?>
+    <img src="../uploads/<?php echo htmlspecialchars($user['profile_photo']); ?>" alt="Profile Picture">
+    <h2><?php echo htmlspecialchars($user['name']); ?></h2>
+    <p>📞 <?php echo htmlspecialchars($user['phone']); ?></p>
+    <p>📧 <?php echo htmlspecialchars($user['email']); ?></p>
+    <p><strong>Total Posts:</strong> <?php echo $postsResult->num_rows; ?></p>
   </div>
+
+  <?php if ($postsResult->num_rows > 0): ?>
+    <div class="posts-container">
+      <?php while($post = $postsResult->fetch_assoc()): ?>
+        <div class="post-card">
+          <img src="../uploads/<?php echo htmlspecialchars($post['image']); ?>" alt="Post Image">
+          <div class="post-details">
+            <h4><?php echo htmlspecialchars($post['title']); ?></h4>
+            <p><strong>Type:</strong> <?php echo ucfirst($post['type']); ?></p>
+            <p><strong>Category:</strong> <?php echo htmlspecialchars($post['category']); ?></p>
+            <p><strong>Location:</strong> <?php echo htmlspecialchars($post['location']); ?></p>
+            <p class="status <?php echo $post['status']; ?>"><strong>Status:</strong> <?php echo ucfirst($post['status']); ?></p>
+            <p><strong>Date:</strong> <?php echo date('d M Y, h:i A', strtotime($post['datetime'])); ?></p>
+          </div>
+        </div>
+      <?php endwhile; ?>
+    </div>
+  <?php else: ?>
+    <p style="margin-top: 30px; font-size: 16px; color: #666;">No posts by this user.</p>
+  <?php endif; ?>
 
 </body>
 </html>

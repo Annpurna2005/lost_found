@@ -17,9 +17,8 @@ if (isset($_GET['q'])) {
            OR users.name LIKE ?
         ORDER BY posts.datetime DESC");
 
-        $likeTerm = "%" . $searchTerm . "%";
+        $likeTerm = '%' . $searchTerm . '%';
         $stmt->bind_param("ssss", $likeTerm, $likeTerm, $likeTerm, $likeTerm);
-
         $stmt->execute();
         $result = $stmt->get_result();
         $results = $result->fetch_all(MYSQLI_ASSOC);
@@ -450,8 +449,6 @@ if (isset($_GET['q'])) {
 </head>
 <body>
   <!-- Animated Background Particles -->
-  <div class="floating-particles" id="particles"></div>
-
   <div class="container">
     <div class="search-header">
       <h1>Find Lost & Found Items</h1>
@@ -473,13 +470,14 @@ if (isset($_GET['q'])) {
           <?php foreach ($results as $post): ?>
             <div class="post-card">
               <div class="post-image">
-                <img src="../controller/uploads/<?php echo htmlspecialchars($post['image']); ?>" alt="Post Image">
+              <img src="<?php echo '../uploads/' . $post['image']; ?>" alt="Post Image">
+
               </div>
 
               <div class="post-content">
                 <div class="user-info">
                   <a href="profile.php?user_id=<?php echo $post['user_id']; ?>">
-                    <img src="../controller/uploads/<?php echo htmlspecialchars($post['profile_photo']); ?>" 
+                    <img src="../uploads/<?php echo htmlspecialchars($post['profile_photo']); ?>" 
                          alt="Profile" class="user-avatar">
                   </a>
                   <a href="profile.php?user_id=<?php echo $post['user_id']; ?>" class="user-name">
@@ -496,43 +494,40 @@ if (isset($_GET['q'])) {
                   </div>
                   <div class="meta-item">
                     <i class="fas fa-map-marker-alt"></i>
-                    <?php echo $post['location']; ?>
+                    <?php echo htmlspecialchars($post['location']); ?>
                   </div>
                   <div class="meta-item status <?php echo $post['status']; ?>">
                     <i class="<?php 
                       echo $post['status'] == 'approved' ? 'fas fa-check-circle' : 
-                           ($post['status'] == 'rejected' ? 'fas fa-times-circle' : 'fas fa-clock'); 
+                           ($post['status'] == 'rejected' ? 'fas fa-times-circle' : 'fas fa-clock');
                     ?>"></i>
                     <?php echo ucfirst($post['status']); ?>
                   </div>
                 </div>
 
-                <p class="post-description"><?php echo htmlspecialchars($post['description']); ?></p>
+                <div class="post-description">
+                  <?php echo nl2br(htmlspecialchars($post['description'])); ?>
+                </div>
 
                 <div class="post-date">
-                  <i class="far fa-clock"></i>
-                  <?php echo date('d M Y, h:i A', strtotime($post['datetime'])); ?>
+                  <i class="fas fa-calendar-alt"></i>
+                  <?php echo date("d M, Y h:i A", strtotime($post['datetime'])); ?>
                 </div>
               </div>
             </div>
           <?php endforeach; ?>
         </div>
-      <?php elseif ($searchTerm): ?>
-        <div class="no-results">
-          <i class="far fa-folder-open"></i>
-          <h3>No Results Found</h3>
-          <p>We couldn't find any matches for "<strong><?php echo htmlspecialchars($searchTerm); ?></strong>"</p>
-          <p>Try different keywords or check your spelling</p>
-        </div>
+
       <?php else: ?>
         <div class="no-results">
-          <i class="fas fa-search"></i>
-          <h3>What are you looking for?</h3>
-          <p>Search for lost or found items by title, description, location, or user</p>
+          <i class="fas fa-box-open"></i>
+          <h3>No results found</h3>
+          <p>We couldn't find anything matching "<strong><?php echo htmlspecialchars($searchTerm); ?></strong>"</p>
         </div>
       <?php endif; ?>
     </div>
   </div>
+
 
   <script>
     // Create floating particles for background
