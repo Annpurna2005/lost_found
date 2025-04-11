@@ -247,7 +247,7 @@ button,
       <div class="profile-left">
       
         <div class="profile-image">
-        <img src="<?php echo '../controller/uploads/' . $profile_photo; ?>" alt="Profile Picture">
+        <img src="<?php echo '../uploads/' . $profile_photo; ?>" alt="Profile Picture">
         </div>
         <div class="profile-info">
           <h2><?php echo $name; ?></h2>
@@ -273,7 +273,7 @@ button,
         <?php while($post = $postsQuery->fetch_assoc()): ?>
           <div class="insta-post">
             <div class="post-image">
-            <img src="<?php echo '../controller/uploads/' . $post['image']; ?>" alt="Post Image">
+            <img src="<?php echo '../uploads/' . $post['image']; ?>" alt="Post Image">
 
             </div>
             <div class="post-details">

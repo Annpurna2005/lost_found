@@ -479,7 +479,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="post">
           <div class="user-info">
             <a href="profile.php?user_id=<?php echo $post['user_id']; ?>" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;">
-              <img src="<?php echo '../controller/uploads/' . $post['profile_photo']; ?>" alt="User">
+              <img src="<?php echo '../uploads/' . $post['profile_photo']; ?>" alt="User">
               <div class="user-details">
                 <span class="name"><?php echo htmlspecialchars($post['name']); ?></span>
                 <span class="phone"><i class="fas fa-phone"></i> <?php echo htmlspecialchars($post['phone']); ?></span>
@@ -488,7 +488,7 @@ if (isset($_SESSION['user_id'])) {
           </div>
 
           <div class="post-image">
-            <img src="<?php echo '../controller/uploads/' . $post['image']; ?>" alt="Post">
+            <img src="<?php echo '../uploads/' . $post['image']; ?>" alt="Post">
           </div>
 
           <div class="post-details">

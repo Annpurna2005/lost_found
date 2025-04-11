@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // ✅ Correct path inside controller/uploads/
     $image_name = $_FILES['image']['name'];
     $image_tmp = $_FILES['image']['tmp_name'];
-    $upload_path = 'uploads/' . $image_name;
+    $upload_path = '../uploads/' . $image_name;
 
     if (move_uploaded_file($image_tmp, $upload_path)) {
         // ✅ Using 'image' instead of 'image_path'
