@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION["name"] = $user["name"];
                 $_SESSION["email"] = $user["email"];
                 $_SESSION["profile_photo"] = $user["profile_photo"];
+
                 $_SESSION["phone"] = $user["phone"];
 
                 // Redirect to dashboard or home
